@@ -38,4 +38,17 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+// -- DELETE /api/users/:id
+router.delete('/:id', (req, res) => {
+  db.remove(req.params.id)
+    .then(usr =>
+      !usr
+        ? res
+            .status(404)
+            .json({ message: 'The user with the specified ID does not exist' })
+        : res.status(200).json(usr)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
 module.exports = router

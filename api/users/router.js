@@ -51,4 +51,27 @@ router.delete('/:id', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+// -- PUT /api/users/:id
+router.put('/:id', (req, res) => {
+  db.update(req.params.id, req.body)
+    .then(u => {
+      if (!req.body.name || !req.body.bio) {
+        res
+          .status(400)
+          .json({ message: 'Please provide name and bio for the user' })
+      } else if (!u) {
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist' })
+      } else {
+        res.status(200).json(u)
+      }
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ message: 'The user information could not be modified' })
+    )
+})
+
 module.exports = router
